@@ -1,6 +1,10 @@
 # MQTT Broker (Eclipse Mosquitto) สำหรับ deploy บน Railway
 # ใช้ config เดียวกับ docker-compose: mosquitto/mosquitto.conf
+#
+# สำหรับ Railway: ต้องตั้ง Start Command เป็นค่าว่าง (ใช้ CMD ของ image)
+# อย่าใช้ startCommand จาก railway.json ของ Next.js
 
 FROM eclipse-mosquitto:2
 COPY mosquitto/mosquitto.conf /mosquitto/config/mosquitto.conf
 EXPOSE 1883
+CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]

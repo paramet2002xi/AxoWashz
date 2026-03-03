@@ -224,5 +224,6 @@ curl http://localhost:8080/api/menu ^
   - `UserId` claim = user id from DB
   - expires in 7 days (configurable via `APP_JWT_EXPIRE_DAYS`)
 
-#   A x o W a s h z  
+#   A x o W a s h z 
+ 
  

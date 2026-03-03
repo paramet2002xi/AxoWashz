@@ -107,11 +107,11 @@ app/
 
 **สำคัญ:** ไฟล์ `railway.json` ไม่มี `startCommand` เพื่อให้ Backend และ MQTT ใช้ CMD/ENTRYPOINT จาก Dockerfile ได้
 
-| Service | Root Directory | ตั้งค่า Start Command ใน Railway |
-|---------|----------------|----------------------------------|
-| **Next.js** | `.` หรือ `frontend` | `HOSTNAME=0.0.0.0 npm run start` |
-| **Backend** | `.` หรือ `frontend` | ไม่ต้องตั้ง (ใช้ Dockerfile) |
-| **MQTT** | `mqtt-railway` | ไม่ต้องตั้ง (ใช้ Dockerfile) |
+| Service | Root Directory | ตั้งค่าใน Railway |
+|---------|----------------|-------------------|
+| **Frontend** | `frontend` | ใช้ `Dockerfile.frontend` • ตั้ง **Variable** `NEXT_PUBLIC_API_URL` = URL ของ Backend (เช่น `https://backend-production-xxxx.up.railway.app`) |
+| **Backend** | `frontend` | ใช้ `Dockerfile` • Start Command ว่างเปล่า |
+| **MQTT** | `mqtt-railway` | Start Command ว่างเปล่า |
 
 ## การพัฒนาเพิ่มเติม
 

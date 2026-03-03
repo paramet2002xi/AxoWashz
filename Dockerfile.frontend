@@ -2,6 +2,10 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
+# รับ API URL ตอน build (ต้องตั้งใน Railway Variables)
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 COPY package.json package-lock.json ./
 RUN npm ci
 

@@ -1,0 +1,6 @@
+# MQTT Broker (Eclipse Mosquitto) สำหรับ deploy บน Railway
+# ใช้ config เดียวกับ docker-compose: frontend/mosquitto/mosquitto.conf
+
+FROM eclipse-mosquitto:2
+COPY frontend/mosquitto/mosquitto.conf /mosquitto/config/mosquitto.conf
+EXPOSE 1883

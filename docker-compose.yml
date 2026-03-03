@@ -1,0 +1,54 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: fan-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fan_db
+      MYSQL_USER: fan_user
+      MYSQL_PASSWORD: fan_pass
+      TZ: Asia/Bangkok
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    command: ["--default-authentication-plugin=mysql_native_password", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    healthcheck:
+      test: ["CMD", "mysqladmin" , "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: fan-mqtt
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  backend:
+    build: .
+    container_name: fan-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mqtt:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fan_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Bangkok
+      SPRING_DATASOURCE_USERNAME: fan_user
+      SPRING_DATASOURCE_PASSWORD: fan_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
+      APP_JWT_SECRET: "change-me-to-a-long-random-secret-at-least-32-chars"
+      APP_JWT_EXPIRE_DAYS: "7"
+      APP_MQTT_BROKER_URL: "tcp://mqtt:1883"
+      APP_MQTT_TOPIC_STATUS: "fan/status"
+      TZ: Asia/Bangkok
+    ports:
+      - "4658:4658"
+
+volumes:
+  mysql_data:

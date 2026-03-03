@@ -1,0 +1,26 @@
+server:
+  address: 0.0.0.0
+  port: 4658
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/fan_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Bangkok}
+    username: ${SPRING_DATASOURCE_USERNAME:fan_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:fan_pass}
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  jwt:
+    secret: ${APP_JWT_SECRET:change-me-to-a-long-random-secret-at-least-32-chars}
+    expire-days: ${APP_JWT_EXPIRE_DAYS:7}
+  mqtt:
+    broker-url: ${APP_MQTT_BROKER_URL:tcp://localhost:1883}
+    topic-update: ${APP_MQTT_TOPIC_UPDATE:fan/update}
+    topic-status: ${APP_MQTT_TOPIC_STATUS:fan/status}
+    client-id: ${APP_MQTT_CLIENT_ID:fan-backend}

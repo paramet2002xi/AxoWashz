@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -240,7 +240,7 @@ function UsageBarChart({
   );
 }
 
-export default function DashboardPage() {
+function DashboardPageContent() {
   const { user, isAuthenticated } = useAuth();
   const { t } = useLanguage();
   const router = useRouter();
@@ -487,5 +487,19 @@ export default function DashboardPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={
+      <Layout>
+        <div className="p-6 flex items-center justify-center min-h-[40vh]">
+          <p className="text-[#333333]">Loading...</p>
+        </div>
+      </Layout>
+    }>
+      <DashboardPageContent />
+    </Suspense>
   );
 }
